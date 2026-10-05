@@ -14,7 +14,7 @@ local menu = imgui.new.bool(false)
 local selectedTab = 1
 
 Regnar = {
-	Teryak = new.bool(false),
+	Teryak = imgui.new.bool(false),
 	FirstDialog = true
 }
 
