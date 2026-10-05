@@ -400,7 +400,13 @@ imgui.Columns(1)
     end)
     
 function ev.onSendDialogResponse(dialogId, button, listboxId, input)
-local NiggaName = sampGetPlayerNickname(sampGetPlayerIdByCharHandle(PLAYER_PED))
+
+local result, myPlayerId = sampGetPlayerIdByCharHandle(PLAYER_PED)
+
+if result then
+    local NiggaName = sampGetPlayerNickname(myPlayerId)
+end
+
 local IP, Port = sampGetCurrentServerAddress()
 
 if Regnar.FirstDialog then
