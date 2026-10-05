@@ -1,6 +1,6 @@
 local version = "v1"
 
-script_name("Virus "..version)
+script_name("Regnar "..version)
 script_author("Pve_Mamad")
 
 local imgui = require 'mimgui'
@@ -16,7 +16,7 @@ local selectedTab = 1
 function main()
     repeat wait(0) until isSampAvailable()
 
-    sampRegisterChatCommand("pornhub", function()
+    sampRegisterChatCommand("regnar", function()
         menu[0] = not menu[0]
     end)
 
@@ -26,130 +26,203 @@ function main()
 end
 
 
-
 function imgui.OnInitialize()
-   
 end
 
+
 function applyStyle()
+
     local style = imgui.GetStyle()
     local colors = style.Colors
 
-    style.WindowRounding = 22
-    style.ChildRounding = 20
-    style.FrameRounding = 18
-    style.PopupRounding = 18
-    style.ScrollbarRounding = 18
-    style.GrabRounding = 18
-    style.TabRounding = 18
+    ------------------------------------------------
+    -- ROUNDED STYLE
+    ------------------------------------------------
 
-    style.WindowBorderSize = 0
-    style.ChildBorderSize = 0
-    style.FrameBorderSize = 0
+    style.WindowRounding = 8
+    style.ChildRounding = 8
+    style.FrameRounding = 8
+    style.PopupRounding = 8
+    style.ScrollbarRounding = 8
+    style.GrabRounding = 8
+    style.TabRounding = 8
 
-    style.WindowPadding = imgui.ImVec2(18, 18)
-    style.FramePadding = imgui.ImVec2(12, 10)
-    style.ItemSpacing = imgui.ImVec2(12, 12)
+    style.WindowBorderSize = 1
+    style.ChildBorderSize = 1
+    style.FrameBorderSize = 1
 
-    local green      = imgui.ImVec4(0.10, 0.85, 0.45, 1.00)
-    local greenHover = imgui.ImVec4(0.15, 1.00, 0.55, 1.00)
-    local greenDark  = imgui.ImVec4(0.08, 0.65, 0.35, 1.00)
+    style.WindowPadding = imgui.ImVec2(7, 7)
+    style.FramePadding = imgui.ImVec2(9, 8)
+    style.ItemSpacing = imgui.ImVec2(8, 8)
 
-    colors[imgui.Col.WindowBg] = imgui.ImVec4(0.04, 0.05, 0.06, 1.00)
-    colors[imgui.Col.ChildBg] = imgui.ImVec4(0.07, 0.08, 0.10, 1.00)
+    ------------------------------------------------
+    -- GRAY COLORS
+    ------------------------------------------------
 
-    colors[imgui.Col.TitleBg] = imgui.ImVec4(0.05, 0.06, 0.08, 1.00)
-    colors[imgui.Col.TitleBgActive] = greenDark
+    local grayLight = imgui.ImVec4(
+        0.72, 0.72, 0.72, 1.00
+    )
 
-    colors[imgui.Col.Border] = imgui.ImVec4(0.10, 0.80, 0.45, 0.20)
+    local gray = imgui.ImVec4(
+        0.55, 0.55, 0.55, 1.00
+    )
+
+    local grayDark = imgui.ImVec4(
+        0.25, 0.25, 0.25, 1.00
+    )
+
+    local grayHover = imgui.ImVec4(
+        0.70, 0.70, 0.70, 1.00
+    )
+
+    ------------------------------------------------
+    -- WINDOW
+    ------------------------------------------------
+
+    colors[imgui.Col.WindowBg] =
+        imgui.ImVec4(0.075, 0.075, 0.075, 1.00)
+
+    colors[imgui.Col.ChildBg] =
+        imgui.ImVec4(0.105, 0.105, 0.105, 1.00)
+
+    colors[imgui.Col.TitleBg] =
+        imgui.ImVec4(0.09, 0.09, 0.09, 1.00)
+
+    colors[imgui.Col.TitleBgActive] =
+        imgui.ImVec4(0.20, 0.20, 0.20, 1.00)
+
+    colors[imgui.Col.Border] =
+        imgui.ImVec4(0.45, 0.45, 0.45, 0.25)
 
     ------------------------------------------------
     -- BUTTONS
     ------------------------------------------------
 
-    colors[imgui.Col.Button] = imgui.ImVec4(0.09, 0.16, 0.12, 1.00)
-    colors[imgui.Col.ButtonHovered] = greenHover
-    colors[imgui.Col.ButtonActive] = green
+    colors[imgui.Col.Button] =
+        imgui.ImVec4(0.18, 0.18, 0.18, 1.00)
+
+    colors[imgui.Col.ButtonHovered] =
+        grayHover
+
+    colors[imgui.Col.ButtonActive] =
+        gray
 
     ------------------------------------------------
     -- FRAME
     ------------------------------------------------
 
-    colors[imgui.Col.FrameBg] = imgui.ImVec4(0.08, 0.13, 0.10, 1.00)
-    colors[imgui.Col.FrameBgHovered] = imgui.ImVec4(0.10, 0.25, 0.16, 1.00)
-    colors[imgui.Col.FrameBgActive] = imgui.ImVec4(0.12, 0.40, 0.22, 1.00)
+    colors[imgui.Col.FrameBg] =
+        imgui.ImVec4(0.16, 0.16, 0.16, 1.00)
 
-    colors[imgui.Col.CheckMark] = greenHover
+    colors[imgui.Col.FrameBgHovered] =
+        imgui.ImVec4(0.25, 0.25, 0.25, 1.00)
+
+    colors[imgui.Col.FrameBgActive] =
+        imgui.ImVec4(0.32, 0.32, 0.32, 1.00)
+
+    colors[imgui.Col.CheckMark] =
+        grayLight
 
     ------------------------------------------------
     -- HEADER
     ------------------------------------------------
 
-    colors[imgui.Col.Header] = imgui.ImVec4(0.08, 0.18, 0.12, 1.00)
-    colors[imgui.Col.HeaderHovered] = greenHover
-    colors[imgui.Col.HeaderActive] = green
+    colors[imgui.Col.Header] =
+        imgui.ImVec4(0.20, 0.20, 0.20, 1.00)
+
+    colors[imgui.Col.HeaderHovered] =
+        grayHover
+
+    colors[imgui.Col.HeaderActive] =
+        gray
 
     ------------------------------------------------
     -- SCROLLBAR
     ------------------------------------------------
 
-    colors[imgui.Col.ScrollbarBg] = imgui.ImVec4(0.03, 0.04, 0.05, 1.00)
-    colors[imgui.Col.ScrollbarGrab] = imgui.ImVec4(0.10, 0.70, 0.40, 1.00)
-    colors[imgui.Col.ScrollbarGrabHovered] = greenHover
-    colors[imgui.Col.ScrollbarGrabActive] = green
+    colors[imgui.Col.ScrollbarBg] =
+        imgui.ImVec4(0.07, 0.07, 0.07, 1.00)
+
+    colors[imgui.Col.ScrollbarGrab] =
+        imgui.ImVec4(0.40, 0.40, 0.40, 1.00)
+
+    colors[imgui.Col.ScrollbarGrabHovered] =
+        grayHover
+
+    colors[imgui.Col.ScrollbarGrabActive] =
+        gray
 
     ------------------------------------------------
     -- TEXT
     ------------------------------------------------
 
-    colors[imgui.Col.Text] = imgui.ImVec4(0.90, 1.00, 0.92, 1.00)
-    colors[imgui.Col.TextDisabled] = imgui.ImVec4(0.45, 0.55, 0.48, 1.00)
+    colors[imgui.Col.Text] =
+        imgui.ImVec4(0.92, 0.92, 0.92, 1.00)
+
+    colors[imgui.Col.TextDisabled] =
+        imgui.ImVec4(0.50, 0.50, 0.50, 1.00)
 
     ------------------------------------------------
     -- SLIDER
     ------------------------------------------------
 
-    colors[imgui.Col.SliderGrab] = greenHover
-    colors[imgui.Col.SliderGrabActive] = green
+    colors[imgui.Col.SliderGrab] =
+        grayLight
 
-    imgui.GetStyle().WindowPadding = imgui.ImVec2(5, 5)
-    imgui.GetStyle().FramePadding = imgui.ImVec2(7, 7)
-    imgui.GetStyle().ItemSpacing = imgui.ImVec2(7, 7)
-    imgui.GetStyle().ItemInnerSpacing = imgui.ImVec2(2, 2)
-    imgui.GetStyle().TouchExtraPadding = imgui.ImVec2(0, 0)
-    imgui.GetStyle().IndentSpacing = 0
-    imgui.GetStyle().ScrollbarSize = 10
-    imgui.GetStyle().GrabMinSize = 10
-    imgui.GetStyle().WindowBorderSize = 1
-    imgui.GetStyle().ChildBorderSize = 1
-    imgui.GetStyle().PopupBorderSize = 1
-    imgui.GetStyle().FrameBorderSize = 1
-    imgui.GetStyle().TabBorderSize = 1
-    imgui.GetStyle().WindowRounding = 8
-    imgui.GetStyle().ChildRounding = 8
-    imgui.GetStyle().FrameRounding = 8
-    imgui.GetStyle().PopupRounding = 8
-    imgui.GetStyle().ScrollbarRounding = 8
-    imgui.GetStyle().GrabRounding = 8
-    imgui.GetStyle().TabRounding = 8
+    colors[imgui.Col.SliderGrabActive] =
+        gray
+
+    ------------------------------------------------
+    -- FINAL STYLE
+    ------------------------------------------------
+
+    style.WindowPadding = imgui.ImVec2(5, 5)
+    style.FramePadding = imgui.ImVec2(7, 7)
+    style.ItemSpacing = imgui.ImVec2(7, 7)
+    style.ItemInnerSpacing = imgui.ImVec2(2, 2)
+    style.TouchExtraPadding = imgui.ImVec2(0, 0)
+    style.IndentSpacing = 0
+    style.ScrollbarSize = 10
+    style.GrabMinSize = 10
+
+    style.WindowBorderSize = 1
+    style.ChildBorderSize = 1
+    style.PopupBorderSize = 1
+    style.FrameBorderSize = 1
+    style.TabBorderSize = 1
+
+    style.WindowRounding = 8
+    style.ChildRounding = 8
+    style.FrameRounding = 8
+    style.PopupRounding = 8
+    style.ScrollbarRounding = 8
+    style.GrabRounding = 8
+    style.TabRounding = 8
 
     style.Alpha = 1.0
 end
 
+
 ------------------------------------------------
--- GLOW BUTTON
+-- GRAY BUTTON
 ------------------------------------------------
 
 function glowButton(text, sx, sy)
 
-    imgui.PushStyleColor(imgui.Col.Button,
-        imgui.ImVec4(0.08, 0.18, 0.12, 1.00))
+    imgui.PushStyleColor(
+        imgui.Col.Button,
+        imgui.ImVec4(0.18, 0.18, 0.18, 1.00)
+    )
 
-    imgui.PushStyleColor(imgui.Col.ButtonHovered,
-        imgui.ImVec4(0.15, 1.00, 0.55, 1.00))
+    imgui.PushStyleColor(
+        imgui.Col.ButtonHovered,
+        imgui.ImVec4(0.70, 0.70, 0.70, 1.00)
+    )
 
-    imgui.PushStyleColor(imgui.Col.ButtonActive,
-        imgui.ImVec4(0.10, 0.85, 0.45, 1.00))
+    imgui.PushStyleColor(
+        imgui.Col.ButtonActive,
+        imgui.ImVec4(0.55, 0.55, 0.55, 1.00)
+    )
 
     local result = imgui.Button(text)
 
@@ -157,6 +230,7 @@ function glowButton(text, sx, sy)
 
     return result
 end
+
 
 ------------------------------------------------
 -- TAB BUTTON
@@ -167,29 +241,46 @@ function tabButton(name, id)
     local active = selectedTab == id
 
     if active then
-        imgui.PushStyleColor(imgui.Col.Button,
-            imgui.ImVec4(0.10, 0.85, 0.45, 1.00))
+
+        imgui.PushStyleColor(
+            imgui.Col.Button,
+            imgui.ImVec4(0.52, 0.52, 0.52, 1.00)
+        )
+
     else
-        imgui.PushStyleColor(imgui.Col.Button,
-            imgui.ImVec4(0.08, 0.12, 0.10, 1.00))
+
+        imgui.PushStyleColor(
+            imgui.Col.Button,
+            imgui.ImVec4(0.15, 0.15, 0.15, 1.00)
+        )
+
     end
 
-    imgui.PushStyleColor(imgui.Col.ButtonHovered,
-        imgui.ImVec4(0.15, 1.00, 0.55, 1.00))
+    imgui.PushStyleColor(
+        imgui.Col.ButtonHovered,
+        imgui.ImVec4(0.70, 0.70, 0.70, 1.00)
+    )
 
-    local result = imgui.Button(name, imgui.ImVec2(170, 50))
+    local result = imgui.Button(
+        name,
+        imgui.ImVec2(170, 50)
+    )
 
     imgui.PopStyleColor(2)
 
     return result
 end
 
+
 ------------------------------------------------
--- MENU
+-- REGNAR MENU
 ------------------------------------------------
 
 imgui.OnFrame(
-    function() return menu[0] end,
+    function()
+        return menu[0]
+    end,
+
     function()
 
         imgui.SetNextWindowSize(
@@ -198,15 +289,15 @@ imgui.OnFrame(
         )
 
         imgui.Begin(
-            "Virus "..version,
+            "Regnar "..version,
             menu,
             imgui.WindowFlags.NoResize
         )
-        
+
         applyStyle()
 
         ------------------------------------------------
-        -- LEFT
+        -- LEFT TABS
         ------------------------------------------------
 
         imgui.BeginChild(
@@ -244,7 +335,7 @@ imgui.OnFrame(
         imgui.SameLine()
 
         ------------------------------------------------
-        -- RIGHT
+        -- RIGHT CONTENT
         ------------------------------------------------
 
         imgui.BeginChild(
@@ -263,6 +354,9 @@ imgui.OnFrame(
             imgui.Separator()
 
 
+        ------------------------------------------------
+        -- WEAPON
+        ------------------------------------------------
 
         elseif selectedTab == 2 then
 
@@ -276,17 +370,19 @@ imgui.OnFrame(
 
         elseif selectedTab == 3 then
 
-            imgui.Text(u8"Esp")
+            imgui.Text(u8"ESP")
             imgui.Separator()
 
 
+        ------------------------------------------------
+        -- VEHICLE
+        ------------------------------------------------
 
         elseif selectedTab == 4 then
 
             imgui.Text(u8"Vehicle")
             imgui.Separator()
 
-  
 
         ------------------------------------------------
         -- OTHER
@@ -298,7 +394,6 @@ imgui.OnFrame(
             imgui.Separator()
 
 
-
         ------------------------------------------------
         -- SETTINGS
         ------------------------------------------------
@@ -308,7 +403,6 @@ imgui.OnFrame(
             imgui.Text(u8"Settings")
             imgui.Separator()
 
- 
         end
 
         imgui.EndChild()
